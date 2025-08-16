@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>for u ms beautiful</title>
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: black;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .flower-head {
+    position: relative;
+    width: 500px;
+    height: 700px;
+  }
+
+  /* Stem */
+  .stem {
+    width: 40px;
+    height: 900px;
+    background: linear-gradient(to bottom, #228B22, #006400);
+    border-radius: 20px;
+    margin-top: -500px;
+    z-index: -1;
+  }
+
+  /* Yellow center */
+  .center {
+    position: absolute;
+    width: 295px;
+    height: 295px;
+    background: rgb(255, 206, 8);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px rgba(0,0,0,0.25);
+    z-index: 2;
+  }
+
+  /* Petals */
+  .petal {
+    position: absolute;
+    width: 145px;
+    height: 145px;
+    background: pink;
+    border: none;
+    border-radius: 60% 60% 60% 60%;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+    z-index: 1;
+  }
+  .petal:hover {
+    transform: scale(1.1);
+  }
+
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.3);
+  z-index: 999; 
+}
+.card {
+  position: relative;
+  width: 320px;
+  padding: 15px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+  z-index: 1000;
+}
+
+  .card img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: crimson;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 28px;
+  }
+  @keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.8);}
+    to {opacity: 1; transform: scale(1);}
+  }
+</style>
+</head>
+<body>
+
+<!-- Flower Head -->
+<div class="flower-head" id="flower-head">
+  <div class="center"></div>
+</div>
+
+<!-- Stem -->
+<div class="stem"></div>
+
+<!-- Popup -->
+<div class="overlay" id="overlay">
+  <div class="card">
+    <button class="close-btn" id="closeBtn">&times;</button>
+    <img id="cardImg" src="" alt="Petal Photo">
+    <p id="cardCaption"></p>
+  </div>
+</div>
+
+<script>
+  const images = [
+    {src:"tineeee.jpg", caption:"ano, nagfoodtrip po after school mo po"},
+    {src:"tinee.jpg", caption:"FEB 12, 2022 - pangatlong kita po sabay nagfoodtrip sa kabilang baryo po"},
+    {src:"t.jpg", caption:"APR 30, 2025 - hehe"},
+    {src:"tine.jpg", caption:"JULY 24, 2023 - foodtrip after school mo po kasi kinulit po kita na hintayin ko uwian niyo po. hihi"},
+    {src:"tineeeee.jpg", caption:"hatid sa bahay galing school niyo po"},
+    {src:"tineeeeee.jpg", caption:"MAY 09, 2023 - DFA: naglakad passport mo po"},
+    {src:"tineeeeeee.jpg", caption:"JAN 28, 2022 - pangalawang beses nagkita sabay nagfoodtrip po"},
+    {src:"tineeeeeeee.jpg", caption:"APR 16, 2024 - congrats po sa ate mo nung araw na yun po tapos po 1st photobooth po natin<3"}
+  ];
+
+  const flowerHead = document.getElementById("flower-head");
+  const overlay = document.getElementById("overlay");
+  const cardImg = document.getElementById("cardImg");
+  const cardCaption = document.getElementById("cardCaption");
+  const closeBtn = document.getElementById("closeBtn");
+  const petalCount = images.length;
+  const radius = 180;
+
+  const centerEl = document.querySelector(".center");
+  const centerX = flowerHead.offsetWidth / 2;
+  const centerY = flowerHead.offsetHeight / 2;
+
+  images.forEach((data, i) => {
+    const angle = (i / petalCount) * (2 * Math.PI);
+    const x = centerX + radius * Math.cos(angle) - 70;
+    const y = centerY + radius * Math.sin(angle) - 70;
+
+    const btn = document.createElement("button");
+    btn.className = "petal";
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+    btn.addEventListener("click", () => {
+      cardImg.src = data.src;
+      cardCaption.textContent = data.caption;
+      overlay.style.display = "flex";
+    });
+    flowerHead.appendChild(btn);
+  });
+
+  closeBtn.addEventListener("click", () => {
+    overlay.style.display = "none";
+  });
+  overlay.addEventListener("click", e => {
+    if (e.target === overlay) overlay.style.display = "none";
+  });
+</script>
+
+</body>
+</html>
